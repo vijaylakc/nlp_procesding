@@ -1,0 +1,53 @@
+doc1="awe_some food quality @ ABC"
+doc2="will not recommend to others"
+doc3="Food quality was good and food taste was also nice"
+doc4="very poor food Quality"
+
+corpus=[doc1,doc2,doc3,doc4]
+target=['pos','neg','pos','neg']
+import nltk
+nltk.download()
+corpus1=list(map(str.lower,corpus))
+corpus1
+import string
+import re
+p=string.punctuation
+print(p)
+s="ab#c^f+e@f[]{}xyz"
+re.sub(f"[{p}]","",s)
+def remove_punch(doc):
+    return re.sub(f"[{p}]","",doc)
+
+corpus2=list(map(remove_punch,corpus1))
+from nltk.corpus import stopwords
+sw=stopwords.words("english")
+print(len(sw))
+sw.append("abc")
+sw.append("chair")
+sw.remove('not')
+print(len(sw))
+print(sw)
+from nltk.tokenize import word_tokenize
+def remove_sw(doc):
+        tokens=word_tokenize(doc)
+        for w in sw:
+            if(w in tokens):
+                tokens.remove(w)
+        return " ".join(tokens)
+remove_sw("india is a country")
+corpus3=list(map(remove_sw,corpus2))
+corpus3
+from sklearn.feature_extraction.text import CountVectorizer
+cv=CountVectorizer()
+X=cv.fit_transform(corpus3)#return sparse matrix
+print(X.toarray()) #dense matrix
+print(cv.get_feature_names())
+corpus3
+cv=CountVectorizer(binary=True)
+X=cv.fit_transform(corpus3)#return sparse matrix
+print(X.toarray()) #dense matrix
+print(cv.get_feature_names())
+print(X)
+from sklearn.feature_extraction.text import TfidfVectorizer
+tv=TfidfVectorizer()
+tv.fit_transform(corpus3).toarray()
